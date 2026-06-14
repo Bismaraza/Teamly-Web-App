@@ -62,7 +62,7 @@ http://localhost/Teamly-Web-App
 ```
 
 ## Screenshots
-Teamly.png 
+assets/images/Teamly.png
 
 ## Future Improvements
 
