@@ -4,7 +4,10 @@
 
 Teamly is a web-based team collaboration application developed to help users organize tasks, manage notes, and work more efficiently through a clean and user-friendly interface.
 
-## Live Link : https://teamlywebapp.netlify.app/
+## Live Link 
+
+https://teamlywebapp.netlify.app/
+
 ## Features
 
 * User Registration & Login
