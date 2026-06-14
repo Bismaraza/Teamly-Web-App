@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup — Teamly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/home.css">
+  <style>
+    .msg { margin: 14px 0 0; padding: 13px 16px; border-radius: 14px; font-weight: 700; font-size: 14px; display: none; }
+    .msg.error { background: #fff0f0; border: 1px solid #ffd0d0; color: #c0392b; }
+    .msg.success { background: #f0fff6; border: 1px solid #b7f5d4; color: #1a7a4a; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; color: #aaa; font-size: 13px; font-weight: 700; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+    .strength-bar { height: 4px; border-radius: 99px; background: var(--line); margin-top: 6px; overflow: hidden; }
+    .strength-fill { height: 100%; width: 0; border-radius: 99px; transition: 0.3s; }
+  </style>
+</head>
+<body>
+
+<header class="glass-header">
+  <a href="index.html" class="brand"><span class="brand-mark">T</span><span>Teamly</span></a>
+  <nav class="nav-menu" id="navMenu">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="integrations.html">Integrations</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a>
+  </nav>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-light">Login</a>
+    <a href="signup.html" class="btn btn-dark">Start free</a>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+  <section class="form-page">
+    <div class="auth-card">
+      <span class="eyebrow">Start free</span>
+      <h1>Create your account</h1>
+      <p>Join Teamly and organize your work.</p>
+
+      <div id="signupMsg" class="msg"></div>
+
+      <div class="field">
+        <label>Full Name</label>
+        <input id="signupName" type="text" required placeholder="Your name">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input id="signupEmail" type="email" required placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="signupPassword" type="password" required placeholder="Minimum 6 characters" oninput="checkStrength(this.value)">
+        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+      </div>
+
+      <button class="btn btn-dark btn-large" id="signupBtn" style="width:100%;margin-top:8px" onclick="doSignup()">Create account</button>
+
+      <div class="divider">or</div>
+      <p style="text-align:center">Already have an account? <a href="login.html"><b>Login</b></a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="creative-footer">
+  <div class="footer-glow"></div>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="index.html" class="brand footer-brand-logo"><span class="brand-mark">T</span><span>Teamly</span></a>
+      <p>A ClickUp-style productivity operating system for students and teams. Built using HTML, CSS, JavaScript, jQuery, PHP, MySQL and XAMPP.</p>
+      <div class="socials"><a>in</a><a>gh</a><a>dr</a><a>tw</a></div>
+    </div>
+    <div class="footer-links">
+      <div><h4>Product</h4><a href="features.html">Features</a><a href="dashboard.php">Dashboard</a><a href="tasks.php">Tasks</a><a href="notes.php">Notes</a></div>
+      <div><h4>Workspace</h4><a href="calendar.html">Calendar</a><a href="integrations.html">Integrations</a><a href="settings.html">Settings</a><a href="pricing.html">Pricing</a></div>
+      <div><h4>Account</h4><a href="login.html">Login</a><a href="signup.html">Signup</a><a href="about.html">About</a><a href="#">Support</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Teamly Semester Project</span><span>Designed for productivity, focus and presentation.</span></div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/js/home.js"></script>
+<script>
+function showMsg(type, text) {
+  const box = document.getElementById('signupMsg');
+  box.className = 'msg ' + type;
+  box.textContent = text;
+  box.style.display = 'block';
+}
+
+function checkStrength(val) {
+  const fill = document.getElementById('strengthFill');
+  let score = 0;
+  if (val.length >= 6) score++;
+  if (val.length >= 10) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  const colors = ['#e74c3c','#e67e22','#f1c40f','#2ecc71'];
+  const widths = ['25%','50%','75%','100%'];
+  fill.style.width = val.length ? widths[score - 1] || '10%' : '0';
+  fill.style.background = val.length ? colors[score - 1] || '#e74c3c' : '';
+}
+
+function doSignup() {
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const btn = document.getElementById('signupBtn');
+
+  if (!name) { showMsg('error', '⚠ Apna naam bharo.'); return; }
+  if (!email) { showMsg('error', '⚠ Email address bharo.'); return; }
+  if (password.length < 6) { showMsg('error', '⚠ Password kam az kam 6 characters ka hona chahiye.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Creating account...';
+
+  $.ajax({
+    url: 'php/signup.php',
+    method: 'POST',
+    data: { name, email, password, plan: 'Starter' },
+    success: function(res) {
+      if (res.trim() === 'ok') {
+        showMsg('success', '✓ Account created successfully! Redirecting...');
+        setTimeout(() => window.location.href = 'dashboard.php', 800);
+      } else {
+        showMsg('error', '✗ ' + (res.trim() || 'Signup failed. Email already exists.'));
+        btn.disabled = false;
+        btn.textContent = 'Create account';
+      }
+    },
+    error: function(xhr) {
+      let detail = xhr.responseText ? xhr.responseText.trim() : ('HTTP ' + xhr.status + ' - ' + xhr.statusText);
+      showMsg('error', '✗ Server/PHP issue: ' + detail + ' | Correct URL use karo: http://localhost/FlowSpace_Fixed/signup.html');
+      btn.disabled = false;
+      btn.textContent = 'Create account';
+    }
+  });
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doSignup();
+});
+</script>
+</body>
+</html>

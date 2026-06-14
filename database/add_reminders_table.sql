@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS reminders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  reminder_date DATE NOT NULL,
+  reminder_time TIME DEFAULT '09:00:00',
+  color VARCHAR(20) DEFAULT 'blue',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Teamly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/home.css">
+  <style>
+    .msg { margin: 14px 0 0; padding: 13px 16px; border-radius: 14px; font-weight: 700; font-size: 14px; display: none; }
+    .msg.error { background: #fff0f0; border: 1px solid #ffd0d0; color: #c0392b; }
+    .msg.success { background: #f0fff6; border: 1px solid #b7f5d4; color: #1a7a4a; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+<header class="glass-header">
+  <a href="index.html" class="brand"><span class="brand-mark">T</span><span>Teamly</span></a>
+  <nav class="nav-menu" id="navMenu">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="integrations.html">Integrations</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a>
+  </nav>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-light">Login</a>
+    <a href="signup.html" class="btn btn-dark">Start free</a>
+    <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+  <section class="form-page">
+    <div class="auth-card">
+      <span class="eyebrow">Welcome back</span>
+      <h1>Login to Teamly</h1>
+      <p>Access your dashboard, tasks and notes.</p>
+
+      <div id="loginMsg" class="msg"></div>
+
+      <div class="field">
+        <label>Email</label>
+        <input id="loginEmail" type="email" required placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="loginPassword" type="password" required placeholder="Your password">
+      </div>
+      <button class="btn btn-dark btn-large" id="loginBtn" style="width:100%;margin-top:8px" onclick="doLogin()">Login</button>
+
+      <div class="divider">or</div>
+      <p style="text-align:center">New here? <a href="signup.html"><b>Create account</b></a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="creative-footer">
+  <div class="footer-glow"></div>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="index.html" class="brand footer-brand-logo"><span class="brand-mark">T</span><span>Teamly</span></a>
+      <p>A ClickUp-style productivity operating system for students and teams. Built using HTML, CSS, JavaScript, jQuery, PHP, MySQL and XAMPP.</p>
+      <div class="socials"><a>in</a><a>gh</a><a>dr</a><a>tw</a></div>
+    </div>
+    <div class="footer-links">
+      <div><h4>Product</h4><a href="features.html">Features</a><a href="dashboard.php">Dashboard</a><a href="tasks.php">Tasks</a><a href="notes.php">Notes</a></div>
+      <div><h4>Workspace</h4><a href="calendar.html">Calendar</a><a href="integrations.html">Integrations</a><a href="settings.html">Settings</a><a href="pricing.html">Pricing</a></div>
+      <div><h4>Account</h4><a href="login.html">Login</a><a href="signup.html">Signup</a><a href="about.html">About</a><a href="#">Support</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Teamly Semester Project</span><span>Designed for productivity, focus and presentation.</span></div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/js/home.js"></script>
+<script>
+function showMsg(type, text) {
+  const box = document.getElementById('loginMsg');
+  box.className = 'msg ' + type;
+  box.textContent = text;
+  box.style.display = 'block';
+}
+
+function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+
+  if (!email || !password) {
+    showMsg('error', '⚠ Email aur password dono bharo.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Logging in...';
+
+  $.ajax({
+    url: 'php/login.php',
+    method: 'POST',
+    data: { email, password },
+    success: function(res) {
+      if (res.trim() === 'ok') {
+        showMsg('success', '✓ Login successful! Redirecting...');
+        setTimeout(() => window.location.href = 'dashboard.php', 800);
+      } else {
+        showMsg('error', '✗ ' + (res.trim() || 'Invalid email or password.'));
+        btn.disabled = false;
+        btn.textContent = 'Login';
+      }
+    },
+    error: function(xhr) {
+      let detail = xhr.responseText ? xhr.responseText.trim() : ('HTTP ' + xhr.status + ' - ' + xhr.statusText);
+      showMsg('error', '✗ Server/PHP issue: ' + detail + ' | Correct URL use karo: http://localhost/FlowSpace_Fixed/login.html');
+      btn.disabled = false;
+      btn.textContent = 'Login';
+    }
+  });
+}
+
+// Enter key support
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+</script>
+</body>
+</html>
