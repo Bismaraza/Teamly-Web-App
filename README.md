@@ -62,8 +62,7 @@ http://localhost/Teamly-Web-App
 ```
 
 ## Screenshots
-
-Add project screenshots here.
+Teamly.png 
 
 ## Future Improvements
 
